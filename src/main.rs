@@ -28,5 +28,4 @@ fn main() {
     let instructions = parser::parse(&tokens);
 
     env.run(&instructions);
-    println!()
 }
