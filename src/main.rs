@@ -14,14 +14,17 @@ fn main() {
 
     let filename = &args[1];
 
-    let contents: Vec<char> = fs::read_to_string(filename).unwrap_or_else(|err| {
-        eprintln!("Error reading file: {}", err);
-        process::exit(1);
-    }).chars().collect();
+    let contents: Vec<char> = fs::read_to_string(filename)
+        .unwrap_or_else(|err| {
+            eprintln!("Error reading file: {}", err);
+            process::exit(1);
+        })
+        .chars()
+        .collect();
 
-    let mut env = Program::BFEnv::new();
-    let tokens = Lexer::tokenize(&contents);
-    let instructions = Parser::parse(&tokens);
+    let mut env = program::BFEnv::new();
+    let tokens = lexer::tokenize(&contents);
+    let instructions = parser::parse(&tokens);
 
     env.run(&instructions);
 }

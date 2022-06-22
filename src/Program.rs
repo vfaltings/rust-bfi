@@ -1,4 +1,4 @@
-use crate::Parser::Instruction;
+use crate::parser::Instruction;
 
 const ARR_SIZE: usize = 30000;
 
@@ -9,9 +9,9 @@ pub struct BFEnv {
 
 impl BFEnv {
     pub fn new() -> BFEnv {
-        BFEnv { 
-            array: [0; 30000], 
-            ptr: 0 
+        BFEnv {
+            array: [0; 30000],
+            ptr: 0,
         }
     }
 

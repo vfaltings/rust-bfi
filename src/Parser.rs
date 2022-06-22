@@ -1,5 +1,5 @@
-use crate::Program::BFEnv;
-use crate::Lexer::Token;
+use crate::lexer::Token;
+use crate::program::BFEnv;
 use core::slice::Iter;
 
 #[derive(Debug)]
@@ -10,9 +10,7 @@ pub enum Expr {
     DecrArr,
     Output,
     Input,
-    While {
-        body: Vec<Expr>
-    },
+    While { body: Vec<Expr> },
 }
 
 impl Instruction for Expr {
@@ -24,12 +22,13 @@ impl Instruction for Expr {
             Expr::DecrArr => env.decr_arr(),
             Expr::Output => print!("{}", env.get_byte() as char),
             Expr::Input => env.read_byte(),
-            Expr::While { body } =>
+            Expr::While { body } => {
                 while env.get_byte() != 0 {
                     for e in body {
                         e.execute(env);
                     }
-                },
+                }
+            }
         }
     }
 }
@@ -47,7 +46,9 @@ pub fn parse(tokens: &[Token]) -> Vec<Expr> {
         let t = if let Some(v) = iter.next() { v } else { break };
 
         match t {
-            Token::StartLoop => result.push(Expr::While { body: parse_while(&mut iter) }),
+            Token::StartLoop => result.push(Expr::While {
+                body: parse_while(&mut iter),
+            }),
             Token::EndLoop => panic!("Parsing Error: unmatched loop bracket!"),
             _ => result.push(parse_simpletoken(t)),
         }
@@ -75,7 +76,9 @@ fn parse_while(iter: &mut Iter<Token>) -> Vec<Expr> {
         let t = if let Some(v) = iter.next() { v } else { break };
 
         match t {
-            Token::StartLoop => result.push(Expr::While { body: parse_while(iter) }),
+            Token::StartLoop => result.push(Expr::While {
+                body: parse_while(iter),
+            }),
             Token::EndLoop => return result,
             _ => result.push(parse_simpletoken(t)),
         }

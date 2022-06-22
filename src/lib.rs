@@ -1,3 +1,3 @@
-pub mod Lexer;
-pub mod Parser;
-pub mod Program;
+pub mod lexer;
+pub mod parser;
+pub mod program;

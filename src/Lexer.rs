@@ -24,7 +24,7 @@ pub fn tokenize(chars: &[char]) -> Vec<Token> {
             '[' => result.push(Token::StartLoop),
             ']' => result.push(Token::EndLoop),
             _ => (),
-        }   
+        }
     }
 
     result
@@ -37,56 +37,56 @@ mod tests {
     #[test]
     fn right_shift_test() {
         let input = vec!['>'];
-        
+
         assert_eq!(tokenize(&input)[0], Token::Right);
     }
 
     #[test]
     fn left_shift_test() {
         let input = vec!['<'];
-        
+
         assert_eq!(tokenize(&input)[0], Token::Left);
     }
-    
+
     #[test]
     fn plus_test() {
         let input = vec!['+'];
-        
+
         assert_eq!(tokenize(&input)[0], Token::Plus);
     }
 
     #[test]
     fn minus_test() {
         let input = vec!['-'];
-        
+
         assert_eq!(tokenize(&input)[0], Token::Minus);
     }
 
     #[test]
     fn out_test() {
         let input = vec!['.'];
-        
+
         assert_eq!(tokenize(&input)[0], Token::Out);
     }
 
     #[test]
     fn in_test() {
         let input = vec![','];
-        
+
         assert_eq!(tokenize(&input)[0], Token::In);
     }
 
     #[test]
     fn startloop_test() {
         let input = vec!['['];
-        
+
         assert_eq!(tokenize(&input)[0], Token::StartLoop);
     }
 
     #[test]
     fn endloop_test() {
         let input = vec![']'];
-        
+
         assert_eq!(tokenize(&input)[0], Token::EndLoop);
     }
 
