@@ -23,7 +23,7 @@ impl Instruction for Expr {
             Expr::IncrArr => env.incr_arr(),
             Expr::DecrArr => env.decr_arr(),
             Expr::Output => print!("{}", env.get_byte() as char),
-            Expr::Input => todo!(),
+            Expr::Input => env.read_byte(),
             Expr::While { body } =>
                 while env.get_byte() != 0 {
                     for e in body {
