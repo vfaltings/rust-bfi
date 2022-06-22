@@ -3,3 +3,5 @@ An interpreter for Brainfuck written in Rust. `rbfi` interprets programs written
 
 To build, use `cargo build`.
 To run, use `rbfi <filename>` or `cargo run <filename>`.
+
+An example `HelloWorld` program is included, to run it simply run `cargo run HelloWorld.txt`.
