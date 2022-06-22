@@ -10,6 +10,7 @@ fn main() {
     if args.len() < 2 {
         eprintln!("Insufficient arguments");
         eprintln!("Usage: {} <FILE>", args[0]);
+        process::exit(1);
     }
 
     let filename = &args[1];
@@ -27,4 +28,5 @@ fn main() {
     let instructions = parser::parse(&tokens);
 
     env.run(&instructions);
+    println!()
 }

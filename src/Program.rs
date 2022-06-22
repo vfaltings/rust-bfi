@@ -1,3 +1,5 @@
+use console::Term;
+
 use crate::parser::Instruction;
 
 const ARR_SIZE: usize = 30000;
@@ -5,6 +7,7 @@ const ARR_SIZE: usize = 30000;
 pub struct BFEnv {
     array: [i8; 30000],
     ptr: usize,
+    term: Term,
 }
 
 impl BFEnv {
@@ -12,6 +15,7 @@ impl BFEnv {
         BFEnv {
             array: [0; 30000],
             ptr: 0,
+            term: Term::stdout(),
         }
     }
 
@@ -48,6 +52,7 @@ impl BFEnv {
     }
 
     pub fn read_byte(&mut self) {
-        todo!()
+        let input = self.term.read_char().expect("Error reading char");
+        self.array[self.ptr] = input as u8 as i8;
     }
 }
