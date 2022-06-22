@@ -37,7 +37,7 @@ pub trait Instruction {
     fn execute(&self, env: &mut BFEnv);
 }
 
-pub fn parse(tokens: &[Token]) -> Vec<Expr> {
+pub fn parse(tokens: &[Token]) -> Result<Vec<Expr>, &'static str> {
     let mut result = Vec::new();
 
     let mut iter = tokens.iter();
@@ -47,29 +47,31 @@ pub fn parse(tokens: &[Token]) -> Vec<Expr> {
 
         match t {
             Token::StartLoop => result.push(Expr::While {
-                body: parse_while(&mut iter),
+                body: parse_while(&mut iter)?,
             }),
-            Token::EndLoop => panic!("Parsing Error: unmatched loop bracket!"),
-            _ => result.push(parse_simpletoken(t)),
+            Token::EndLoop => return Err("Parsing Error: unmatched loop bracket!"),
+            _ => result.push(parse_simpletoken(t)?),
         }
     }
 
-    result
+    Ok(result)
 }
 
-fn parse_simpletoken(token: &Token) -> Expr {
-    match token {
+fn parse_simpletoken(token: &Token) -> Result<Expr, &'static str> {
+    let res = match token {
         Token::Right => Expr::IncrPtr,
         Token::Left => Expr::DecrPtr,
         Token::Plus => Expr::IncrArr,
         Token::Minus => Expr::DecrArr,
         Token::Out => Expr::Output,
         Token::In => Expr::Input,
-        _ => panic!("Parsing Error: Trying to parse while token as simple token"),
-    }
+        _ => return Err("Parsing Error: Trying to parse while token as simple token"),
+    };
+
+    Ok(res)
 }
 
-fn parse_while(iter: &mut Iter<Token>) -> Vec<Expr> {
+fn parse_while(iter: &mut Iter<Token>) -> Result<Vec<Expr>, &'static str> {
     let mut result = Vec::new();
 
     loop {
@@ -77,12 +79,12 @@ fn parse_while(iter: &mut Iter<Token>) -> Vec<Expr> {
 
         match t {
             Token::StartLoop => result.push(Expr::While {
-                body: parse_while(iter),
+                body: parse_while(iter)?,
             }),
-            Token::EndLoop => return result,
-            _ => result.push(parse_simpletoken(t)),
+            Token::EndLoop => return Ok(result),
+            _ => result.push(parse_simpletoken(t)?),
         }
     }
 
-    panic!("Parsing Error: unmatched loop bracket!")
+    Err("Parsing Error: unmatched loop bracket!")
 }

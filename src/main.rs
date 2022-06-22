@@ -1,10 +1,11 @@
+use std::error::Error;
 use std::env;
 use std::fs;
 use std::process;
 
 use rbfi::*;
 
-fn main() {
+fn main() -> Result<(), Box<dyn Error>> {
     let args: Vec<String> = env::args().collect();
 
     if args.len() < 2 {
@@ -25,7 +26,8 @@ fn main() {
 
     let mut env = program::BFEnv::new();
     let tokens = lexer::tokenize(&contents);
-    let instructions = parser::parse(&tokens);
+    let instructions = parser::parse(&tokens)?;
 
     env.run(&instructions);
+    Ok(())
 }
