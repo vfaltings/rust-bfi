@@ -5,7 +5,7 @@ use crate::parser::Instruction;
 const ARR_SIZE: usize = 30000;
 
 pub struct BFEnv {
-    array: [i8; 30000],
+    array: [i8; ARR_SIZE],
     ptr: usize,
     term: Term,
 }
@@ -13,7 +13,7 @@ pub struct BFEnv {
 impl BFEnv {
     pub fn new() -> BFEnv {
         BFEnv {
-            array: [0; 30000],
+            array: [0; ARR_SIZE],
             ptr: 0,
             term: Term::stdout(),
         }
