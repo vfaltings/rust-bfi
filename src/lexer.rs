@@ -10,24 +10,27 @@ pub enum Token {
     EndLoop,
 }
 
+const BF_CHARS: [char; 8] = ['>', '<', '+', '-', '.', ',', '[', ']'];
+
 pub fn tokenize(chars: &[char]) -> Vec<Token> {
-    let mut result = Vec::new();
-
-    for c in chars {
+    let closure = |c: &char| {
         match c {
-            '>' => result.push(Token::Right),
-            '<' => result.push(Token::Left),
-            '+' => result.push(Token::Plus),
-            '-' => result.push(Token::Minus),
-            '.' => result.push(Token::Out),
-            ',' => result.push(Token::In),
-            '[' => result.push(Token::StartLoop),
-            ']' => result.push(Token::EndLoop),
-            _ => (),
+            '>' => Token::Right,
+            '<' => Token::Left,
+            '+' => Token::Plus,
+            '-' => Token::Minus,
+            '.' => Token::Out,
+            ',' => Token::In,
+            '[' => Token::StartLoop,
+            ']' => Token::EndLoop,
+            _ => panic!("Unknown char in tokenize closure"),
         }
-    }
+    };
 
-    result
+    chars.iter()
+        .filter(|c| BF_CHARS.contains(c))
+        .map(closure)
+        .collect()
 }
 
 #[cfg(test)]
